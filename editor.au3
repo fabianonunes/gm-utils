@@ -1,6 +1,6 @@
 ﻿#Region
 #AutoIt3Wrapper_Outfile=K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.10
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.19
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=editor.ico
 #EndRegion
@@ -14,12 +14,19 @@
 
 Opt("TrayOnEventMode", 1)
 Opt("TrayMenuMode", 1)
+Opt("SendKeyDelay", 25)
 
 ;~ config tray
 TraySetClick(16)
-TraySetOnEvent(-9, "createMenu")
 TraySetIcon("editor.ico")
 TraySetState()
+
+$loadingItem = TrayCreateItem("Carregando...")
+TraySetToolTip("Carregando...")
+Sleep(15000)
+TrayItemDelete($loadingItem)
+
+TraySetOnEvent(-9, "createMenu")
 
 _CheckUpdate("K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor")
 InstallInlineExtension()
@@ -152,7 +159,7 @@ Func openEditor($result)
 			WinActivate($title)
 
 			$focused = ControlGetFocus($title, $editor)
-			Sleep(50)
+			Sleep(200)
 
 			$editorTimeout += 1
 
@@ -189,5 +196,5 @@ Func ExitScript()
 EndFunc
 
 While 1
-    Sleep(10)
+    Sleep(50)
 WEnd
