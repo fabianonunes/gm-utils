@@ -1,13 +1,15 @@
 #Region
 #AutoIt3Wrapper_Outfile=K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.18
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.24
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=editor.ico
 #EndRegion
 
+
 #include <Array.au3>
 #include <Misc.au3>
 #include "helpers.au3"
+#include-once
 #include "self_update.au3"
 #include "updates.au3"
 #include "about.au3"
@@ -23,17 +25,12 @@ TraySetState()
 
 $loadingItem = TrayCreateItem("Carregando...")
 TraySetToolTip("Carregando...")
-Sleep(15000)
+Sleep(5000)
 TrayItemDelete($loadingItem)
 
 TraySetOnEvent(-9, "createMenu")
 
-_CheckUpdate("K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor")
-InstallInlineExtension()
-UpdateDotm()
-
-
-Global $items = 20, $menuItems[$items], $menuElements[$items+3]
+Global $items = 20, $menuItems[$items], $menuElements[$items+3], $lastClick
 
 TraySetToolTip("Click: Editor" & @LF & "Ctrl + Click: e-SIJ" & @LF & "Shift + Click: Visualizar todos (PDFs)")
 
@@ -75,7 +72,7 @@ Func createMenu()
 	_ArrayPush($menuElements, TrayCreateItem(""), 0)
 
 
-	Local $order = 0
+	Local $order = 0, $idItem
 	For $element In $menuItems
 
 		If StringLen($element) > 0 Then
@@ -88,7 +85,13 @@ Func createMenu()
 				EndIf
 			EndIf
 
-			_ArrayPush($menuElements, TrayCreateItem($element), 0)
+			$idItem = TrayCreateItem($element)
+
+			If $element == $lastClick Then
+				TrayItemSetState($idItem, 256)
+			EndIf
+
+			_ArrayPush($menuElements, $idItem, 0)
 
 			TrayItemSetOnEvent(-1, "openEditorFromTray")
 
@@ -113,6 +116,9 @@ Func openEditorFromTray()
 
 ;~  get item value before clear
 	Local $value = TrayItemGetText(@TRAY_ID)
+
+;~  salva o item clicado
+	$lastClick = $value
 
 	Local $id = parseProcesso($value)
 
@@ -195,6 +201,16 @@ Func ExitScript()
 	Exit
 EndFunc
 
+Global $timeout = 0
 While 1
     Sleep(50)
+
+	If($timeout = 0 Or Mod($timeout, 1000*60*10) == 0) Then
+		_CheckProgramUpdate("K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor")
+		UpdateDotm()
+		$timeout = 0
+	EndIf
+
+	$timeout+=50
+
 WEnd

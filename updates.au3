@@ -1,5 +1,3 @@
-
-
 Func InstallInlineExtension ()
 
 	Local $source = "K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\"
@@ -19,12 +17,6 @@ Func UpdateDotm ()
 	Local $localFile = @AppDataDir & "\Microsoft\Word\INICIALIZAÇÃO\GMJD.dotm"
 	Local $serverFile = "K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Modelos\GMJD.dotm"
 
-	Local $serverDate = FileGetTime($serverFile, 0, 1)
-	Local $localDate = FileGetTime($localFile, 0, 1)
-
-	If ($localDate == 0 Or Number($serverDate) > Number($localDate) ) Then
-		ConsoleWrite($serverDate & " - " & $localDate & @LF)
-		FileCopy($serverFile, $localFile, 9)
-	EndIf
+	_CheckFileUpdate($localFile, $serverFile)
 
 EndFunc
