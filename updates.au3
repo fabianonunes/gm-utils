@@ -16,7 +16,10 @@ Func UpdateDotm ()
 
 	Local $localFile = @AppDataDir & "\Microsoft\Word\INICIALIZAÇÃO\GMJD.dotm"
 	Local $serverFile = "K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Modelos\GMJD.dotm"
+	_CheckFileUpdate($localFile, $serverFile)
 
+	$localFile = @AppDataDir & "\Microsoft\QuickStyles\GMJD.dotx"
+	$serverFile = "K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Modelos\GMJD.dotx"
 	_CheckFileUpdate($localFile, $serverFile)
 
 EndFunc
