@@ -7,6 +7,7 @@ Func _CheckProgramUpdate($serverFile)
         _selfupdate($serverFile)
         Exit
     EndIf
+	Return True
 EndFunc
 
 Func _CheckFileUpdate($localFile, $serverFile)
@@ -26,6 +27,8 @@ Func _selfupdate($serverFile, $timer = 1500)
 EndFunc
 
 Func _updateFile($localFile, $serverFile)
-	FileMove($localFile, $localFile & '.old', 1)
-	FileCopy($serverFile, $localFile)
+	If FileExists ($localFile) Then
+		FileMove($localFile, $localFile & '.old', 1)
+	EndIf
+	FileCopy($serverFile, $localFile, 9)
 EndFunc
