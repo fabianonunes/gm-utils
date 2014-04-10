@@ -20,8 +20,6 @@ Func About ()
 
 	GUISetState(@SW_SHOW)
 
-	ConsoleWrite("oi" & @LF)
-
 	While 1
 		$nMsg = GUIGetMsg()
 		Switch $nMsg
