@@ -1,6 +1,6 @@
 ﻿#Region
 #AutoIt3Wrapper_Outfile=K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.25
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.29
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=editor.ico
 #EndRegion
@@ -30,7 +30,7 @@ TrayItemDelete($loadingItem)
 
 TraySetOnEvent(-9, "createMenu")
 
-Global $items = 20, $menuItems[$items], $menuElements[$items+3], $lastClick
+Global $items = 20, $menuItems[$items], $menuElements[$items+4], $lastClick
 
 TraySetToolTip("Click: Editor" & @LF & "Ctrl + Click: e-SIJ" & @LF & "Shift + Click: Visualizar todos (PDFs)")
 
@@ -67,10 +67,13 @@ Func createMenu()
  	_ArrayPush($menuElements, TrayCreateItem("Sobre..."), 0)
 	TrayItemSetOnEvent(-1, "About")
 
+ 	_ArrayPush($menuElements, TrayCreateItem("Atualizar"), 0)
+	TrayItemSetOnEvent(-1, "Update")
+
 	_ArrayPush($menuElements, TrayCreateItem("Sair"), 0)
 	TrayItemSetOnEvent(-1, "ExitScript")
-	_ArrayPush($menuElements, TrayCreateItem(""), 0)
 
+	_ArrayPush($menuElements, TrayCreateItem(""), 0)
 
 	Local $order = 0, $idItem
 	For $element In $menuItems
@@ -195,6 +198,14 @@ Func openEditor($result)
 
 	EndIf
 
+EndFunc
+
+Func Update()
+	UpdateDotm()
+	Local $update = _CheckProgramUpdate("K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor")
+	If $update Then
+		MsgBox(1, "Atualizado", "Atualizado")
+	EndIf
 EndFunc
 
 Func ExitScript()
