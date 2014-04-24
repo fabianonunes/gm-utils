@@ -1,6 +1,6 @@
 ﻿#Region
 #AutoIt3Wrapper_Outfile=K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.29
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.30
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=editor.ico
 #EndRegion
@@ -30,6 +30,7 @@ TrayItemDelete($loadingItem)
 
 TraySetOnEvent(-9, "createMenu")
 
+; ~ ao adicionar um novo item, essas variaveis devem ser atualizadas
 Global $items = 20, $menuItems[$items], $menuElements[$items+4], $lastClick
 
 TraySetToolTip("Click: Editor" & @LF & "Ctrl + Click: e-SIJ" & @LF & "Shift + Click: Visualizar todos (PDFs)")
@@ -91,7 +92,7 @@ Func createMenu()
 			$idItem = TrayCreateItem($element)
 
 			If $element == $lastClick Then
-				TrayItemSetState($idItem, 256)
+				TrayItemSetState($idItem, 256 + 1)
 			EndIf
 
 			_ArrayPush($menuElements, $idItem, 0)
