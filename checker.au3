@@ -1,6 +1,6 @@
 ﻿#Region
 #AutoIt3Wrapper_Outfile=D:\Checker
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.2
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.4
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=editor.ico
 #EndRegion
@@ -11,7 +11,12 @@
 
 Opt("SendKeyDelay", 30)
 
-Local $fileText = FileOpenDialog("Lista de processos", "c:\", "Text files (*.txt)")
+Local $fileText
+If UBound($CmdLine) > 1 And FileExists($CmdLine[1]) Then
+	$fileText = $CmdLine[1]
+Else
+	$fileText = FileOpenDialog("Lista de processos", "c:\", "Text files (*.txt)")
+EndIf
 
 Local $processoRegexp = "[0-9]{0,7}-[0-9]{1,2}[-.][0-9]{4}[-.][0-9][-.][0-9]{2}[-.][0-9]{4}"
 
