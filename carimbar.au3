@@ -1,3 +1,11 @@
+#Region
+#AutoIt3Wrapper_Outfile=D:\Carimbador.exe
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.3
+#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
+#AutoIt3Wrapper_Icon=icons\stamp.ico
+#EndRegion
+
+
 #include <Array.au3>
 #include <File.au3>
 #include <Misc.au3>
@@ -7,11 +15,20 @@
 Opt("MustDeclareVars", 1)
 
 Local $aArray = 0, $row
-Local $tableFile = "e:\carimbar\tp.txt"
+
+Local $tableFile
+If UBound($CmdLine) > 1 And FileExists($CmdLine[1]) Then
+	$tableFile = $CmdLine[1]
+Else
+	$tableFile = FileOpenDialog("Lista de processos", "c:\", "Text files (*.txt)")
+EndIf
+
 
 Local $stampsPath = $tableFile & "\..\Carimbos\"
 
 _FileReadToArray($tableFile, $aArray, 0)
+
+ConsoleWrite((UBound($tableFile))&@LF)
 
 Local $files = _FileListToArray($tableFile & "\..", "*.pdf", 1, true)
 
@@ -20,28 +37,36 @@ Local $barcode, $matches
 
 DirCreate($tableFile & "\..\Carimbados\")
 
+ProgressOn("Carimbar Documentos", "Carimbando ...", "Aguarde...")
+
 For $i = 1 To UBound($files)-1
 
-   $matches = StringRegExp($files[$i], $processoRegexp, 1)
+	ProgressSet(100*$i/(UBound($files)-1), "Carimbando " & $i & " de " & (UBound($files)-1))
 
-   If UBound($matches) < 1 Then
-	  ContinueLoop
-   EndIf
+	$matches = StringRegExp($files[$i], $processoRegexp, 1)
 
-   $row = findRow($aArray, $matches[0])
+	If UBound($matches) < 1 Then
+		ContinueLoop
+	EndIf
 
-   If $row < 0 Then
-	  ContinueLoop
-   EndIf
+	$row = findRow($aArray, $matches[0])
 
-   $barcode = StringRegExpReplace($matches[0], "[^0-9]", "")
-   $barcode = StringFormat("%020s", $barcode)
+	If $row < 0 Then
+		ContinueLoop
+	EndIf
 
-   $row = StringSplit($row, Chr(9))
+	$barcode = StringRegExpReplace($matches[0], "[^0-9]", "")
+	$barcode = StringFormat("%020s", $barcode)
 
-   stamp($files[$i], $barcode, $row)
+	$row = StringSplit($row, Chr(9))
+
+	stamp($files[$i], $barcode, $row)
 
 Next
+
+ProgressSet(100, "Concluido")
+Sleep(2000)
+ProgressOff()
 
 Func findRow($aTable, $id)
 
@@ -61,6 +86,8 @@ Func stamp($filename, $barcode, $opts)
 	  $pdDoc.Open($filename)
 
 	  $jsObj = $pdDoc.GetJSObject()
+
+	  $jsObj.addWatermarkFromFile($stampsPath & "TIMBRE.pdf", 0, 0)
 
 	  $stamp = $stampsPath & $opts[2] & ".pdf"
 	  If FileExists($stamp) Then
@@ -82,13 +109,6 @@ Func stamp($filename, $barcode, $opts)
 	  $pdDoc.Save(1, $filename & "\..\carimbados\" & $row[1] & ".pdf")
 
 	  $pdDoc.Close()
-
-	  ConsoleWrite($row[1] & @LF)
-
-	  ;ShellExecuteWait(_PathFull($filename & "\..\carimbados\" & $row[1] & ".pdf"), "", "", "print")
-
-	  ;Sleep(2)
-
 
    EndIf
 
@@ -113,6 +133,3 @@ Func stampForm($jsObj, $fileForm, $field, $data)
 
 EndFunc
 
-Func toAcroPath($path)
-   return "/" & StringReplace(StringReplace($path, ":", ""), "\", "/")
-EndFunc
