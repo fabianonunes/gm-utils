@@ -1,10 +1,9 @@
 #Region
-#AutoIt3Wrapper_Outfile=D:\Carimbador.exe
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.3
+#AutoIt3Wrapper_Outfile=D:\GMJD\Carimbador.exe
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.11
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=icons\stamp.ico
 #EndRegion
-
 
 #include <Array.au3>
 #include <File.au3>
@@ -20,11 +19,16 @@ Local $tableFile
 If UBound($CmdLine) > 1 And FileExists($CmdLine[1]) Then
 	$tableFile = $CmdLine[1]
 Else
-	$tableFile = FileOpenDialog("Lista de processos", "c:\", "Text files (*.txt)")
+	$tableFile = FileOpenDialog("Lista de processos", "c:\", "List files (*.prc)|Text files (*.txt)")
 EndIf
 
-
 Local $stampsPath = $tableFile & "\..\Carimbos\"
+
+While Not FileExists($stampsPath)
+	If MsgBox(5, "Erro", "Pasta de carimbos não encontrada") == 2 Then
+		Exit
+	EndIf
+WEnd
 
 _FileReadToArray($tableFile, $aArray, 0)
 
@@ -33,7 +37,7 @@ ConsoleWrite((UBound($tableFile))&@LF)
 Local $files = _FileListToArray($tableFile & "\..", "*.pdf", 1, true)
 
 Local $processoRegexp = "[0-9]{0,7}-[0-9]{1,2}[-.][0-9]{4}[-.][0-9][-.][0-9]{2}[-.][0-9]{4}"
-Local $barcode, $matches
+Local $barcode, $matches, $index
 
 DirCreate($tableFile & "\..\Carimbados\")
 
@@ -49,7 +53,8 @@ For $i = 1 To UBound($files)-1
 		ContinueLoop
 	EndIf
 
-	$row = findRow($aArray, $matches[0])
+	$index = findRow($aArray, $matches[0])
+	$row = $aArray[$index]
 
 	If $row < 0 Then
 		ContinueLoop
@@ -60,7 +65,7 @@ For $i = 1 To UBound($files)-1
 
 	$row = StringSplit($row, Chr(9))
 
-	stamp($files[$i], $barcode, $row)
+	stamp($files[$i], $barcode, $row, StringFormat("%03s", $index))
 
 Next
 
@@ -72,11 +77,11 @@ Func findRow($aTable, $id)
 
    Local $index = _ArraySearch($aTable, "^" & $id, 0, 0, 0, 3)
 
-   return $index > -1 ? $aTable[$index] : -1
+   return $index
 
 EndFunc
 
-Func stamp($filename, $barcode, $opts)
+Func stamp($filename, $barcode, $opts, $index)
 
    Local $pdDoc = ObjCreate("AcroExch.PDDoc")
    Local $formDoc, $jsObj, $jsFormObj, $stamp, $tempBarcode, $formData
@@ -106,7 +111,7 @@ Func stamp($filename, $barcode, $opts)
 		 stampForm($jsObj, $stampsPath & "AM.pdf", "AM", $formData)
 	  EndIf
 
-	  $pdDoc.Save(1, $filename & "\..\carimbados\" & $row[1] & ".pdf")
+	  $pdDoc.Save(1, $filename & "\..\carimbados\" & $index & "_" & $row[1] & ".pdf")
 
 	  $pdDoc.Close()
 
