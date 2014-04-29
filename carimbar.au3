@@ -19,7 +19,7 @@ Local $tableFile
 If UBound($CmdLine) > 1 And FileExists($CmdLine[1]) Then
 	$tableFile = $CmdLine[1]
 Else
-	$tableFile = FileOpenDialog("Lista de processos", "c:\", "List files (*.prc)|Text files (*.txt)")
+	$tableFile = FileOpenDialog("Lista de processos", "c:\", "Guias de Carimbo (*.prc)|Arquivos de texto (*.txt)")
 EndIf
 
 Local $stampsPath = $tableFile & "\..\Carimbos\"
