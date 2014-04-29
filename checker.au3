@@ -1,6 +1,6 @@
 ﻿#Region
-#AutoIt3Wrapper_Outfile=D:\Checker.exe
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.8
+#AutoIt3Wrapper_Outfile=D:\GMJD\Checker.exe
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.10
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=icons\checker.ico
 #EndRegion
