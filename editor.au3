@@ -1,18 +1,42 @@
 ﻿#Region
 #AutoIt3Wrapper_Outfile=K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.30
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.41
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=icons\editor.ico
+#AutoIt3Wrapper_Res_Icon_Add=icons\stamp.ico
+#AutoIt3Wrapper_Res_Icon_Add=icons\checker.ico
 #EndRegion
-
 
 #include <Array.au3>
 #include <Misc.au3>
 #include "helpers.au3"
-#include-once
+#include "lib\FileRegister.au3"
 #include "self_update.au3"
 #include "updates.au3"
 #include "about.au3"
+#include "carimbar.au3"
+#include "checker.au3"
+
+FileRegister("fab", 'D:\GMJD\Editor.exe stamp "%1"', 'Carimbar', 0, "D:\GMJD\Editor.exe,5")
+FileRegister("fab", 'D:\GMJD\Editor.exe check "%1"', 'Selecionar', 1, "D:\GMJD\Editor.exe,5")
+
+If UBound($CmdLine) > 1 Then
+
+	If $CmdLine[1] == "stamp" Then
+
+		TraySetIcon("icons\stamp.ico")
+		carimbar($CmdLine[2])
+
+	ElseIf $CmdLine[1] == "check" Then
+
+		TraySetIcon("icons\checker.ico")
+		checker($CmdLine[2])
+
+	EndIf
+
+	Exit
+
+EndIf
 
 Opt("TrayOnEventMode", 1)
 Opt("TrayMenuMode", 1)
@@ -20,10 +44,10 @@ Opt("SendKeyDelay", 25)
 
 ;~ config tray
 TraySetClick(16)
-TraySetIcon("editor.ico")
+TraySetIcon("icons\editor.ico")
 TraySetState()
 
-$loadingItem = TrayCreateItem("Carregando...")
+Local $loadingItem = TrayCreateItem("Carregando...")
 TraySetToolTip("Carregando...")
 Sleep(5000)
 TrayItemDelete($loadingItem)
