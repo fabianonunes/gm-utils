@@ -10,7 +10,7 @@ If IsAdmin() Then
 	$regPath = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SumatraPDF"
 EndIf
 
-$version = RegRead($regPath, "DisplayVersion")
+Local $version = RegRead($regPath, "DisplayVersion")
 
 If @error <> 0 Then
 	FileCopy($installerPath, $targetPath)

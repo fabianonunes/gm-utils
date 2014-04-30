@@ -9,7 +9,7 @@ Func getPK($id)
 	$oHTTP.Open("GET", $url, False)
 	$oHTTP.Option(6) = False
 	$oHTTP.Send()
-	$HeaderResponses = $oHTTP.GetAllResponseHeaders()
+	Local $HeaderResponses = $oHTTP.GetAllResponseHeaders()
 	return StringRegExp($HeaderResponses, $mask, 1)
 
 EndFunc

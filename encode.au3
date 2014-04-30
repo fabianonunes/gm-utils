@@ -1,6 +1,6 @@
-#include <Array.au3>
+#include-once
 
-Opt("MustDeclareVars", 1)
+#include <Array.au3>
 
 Func spartanEncode128C($code)
 
