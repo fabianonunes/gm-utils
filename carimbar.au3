@@ -27,7 +27,7 @@ Func carimbar($argFile = "")
 
 	_FileReadToArray($tableFile, $aArray, 0)
 
-	Local $files = _FileListToArray($tableFile & "\..", "*.pdf", 1, true)
+	Local $files = _FileListToArray($tableFile & "\..\Votos\", "*.pdf", 1, true)
 
 	Local $processoRegexp = "[0-9]{0,7}-[0-9]{1,2}[-.][0-9]{4}[-.][0-9][-.][0-9]{2}[-.][0-9]{4}"
 	Local $barcode, $matches, $index, $i
@@ -109,7 +109,7 @@ Func stamp($filename, $barcode, $opts, $index)
 		 stampForm($jsObj, $stampsPath & "AM.pdf", "AM", $formData)
 	  EndIf
 
-	  $pdDoc.Save(1, $filename & "\..\carimbados\" & $index & "_" & $opts[1] & ".pdf")
+	  $pdDoc.Save(1, $filename & "\..\..\Carimbados\" & $index & "_" & $opts[1] & ".pdf")
 
 	  $pdDoc.Close()
 
