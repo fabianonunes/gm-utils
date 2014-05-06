@@ -1,6 +1,6 @@
 ﻿#Region
 #AutoIt3Wrapper_Outfile=K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.44
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.46
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=icons\editor.ico
 #AutoIt3Wrapper_Res_Icon_Add=icons\stamp.ico
@@ -40,7 +40,7 @@ EndIf
 
 Opt("TrayOnEventMode", 1)
 Opt("TrayMenuMode", 1)
-Opt("SendKeyDelay", 25)
+Opt("SendKeyDelay", 45)
 
 ;~ config tray
 TraySetClick(16)
@@ -186,7 +186,7 @@ Func openEditor($result)
 		EndIf
 
 
-		Send("!pe{RIGHT}{ENTER}")
+		Send("!pe{RIGHT}e")
 
 		While($focused <> "Edit1")
 
@@ -205,24 +205,32 @@ Func openEditor($result)
 
 		WEnd
 
-		Send($result[0])
+		Opt("SendKeyDelay", 15)
 
-;~ 		it isn't necessary to send a tab when the number has 7 digits
-		If(StringLen($result[0])<7) Then
-			Send("{TAB}")
-		EndIf
+		setFocusText($title, $editor, $result[0])
+		Send("{TAB}")
 
-		Send($result[1]&$result[2])
+		setFocusText($title, $editor, $result[1])
+		Send("{TAB}")
 
-;~ 		it is necessary to send justice code when the number has 7 digits
-		If(StringLen($result[0])>6) Then
-			Send($result[3])
-		EndIf
+		setFocusText($title, $editor, $result[2])
+		Send("{TAB}")
 
-		Send($result[4]&$result[5]&"{F8}")
+		setFocusText($title, $editor, $result[4])
+		Send("{TAB}")
+
+		setFocusText($title, $editor, $result[5])
+		Send("{F8}")
+
+		Opt("SendKeyDelay", 45)
 
 	EndIf
 
+EndFunc
+
+Func setFocusText($title, $text, $value)
+	Local $focused = ControlGetFocus($title, $text)
+	ControlSetText ($title, $text, $focused, $value )
 EndFunc
 
 Func Update()
