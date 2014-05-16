@@ -7,7 +7,7 @@
 checker("e:\tp")
 Func checker($argFile = "")
 
-	Opt("SendKeyDelay", 15)
+	Opt("SendKeyDelay", 10)
 
 	Local $fileText
 
@@ -78,13 +78,13 @@ Func checker($argFile = "")
 				; - vai e volta
 				Send("{DOWN}")
 				Send("^{PGDN}")
-				Sleep(150)
+				Sleep(100)
 				Send("^{PGDN}")
-				Sleep(150)
+				Sleep(100)
 			Else
 				Send("{DOWN}")
 				Send("+{TAB}+{TAB}+{TAB}+{TAB}+{TAB}")
-				Sleep(30)
+				Sleep(20)
 			EndIf
 
 
