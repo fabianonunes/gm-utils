@@ -1,6 +1,7 @@
 ﻿#Region
 #AutoIt3Wrapper_Outfile=K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.46
+#__AutoIt3Wrapper_Outfile=D:\GMJD\Editor.exe
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.51
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=icons\editor.ico
 #AutoIt3Wrapper_Res_Icon_Add=icons\stamp.ico
