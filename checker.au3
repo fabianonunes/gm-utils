@@ -5,7 +5,7 @@
 
 Func checker($argFile = "")
 
-	Opt("SendKeyDelay", 45)
+	Opt("SendKeyDelay", 10)
 
 	Local $fileText
 
@@ -28,21 +28,37 @@ Func checker($argFile = "")
 		Local $hWnd = WinActivate($title, $editor)
 		Local $sControl = ControlGetFocus($hWnd)
 		Local $previous = ""
+		Local $current = ""
 
 		Do
 
-			$previous = ControlGetText($hWnd, "", $sControl)
+			$current = ControlGetText($hWnd, "", $sControl)
 
-			If _ArraySearch($aArray, $previous) > -1 Then
-				Send("{TAB}{TAB}")
-				Opt("SendKeyDelay", 150)
-				Send("{SPACE}{TAB}{DOWN}")
-				Opt("SendKeyDelay", 45)
-			Else
+			ConsoleWrite($current & " - " & $previous & @LF)
+
+			If $previous == $current Then
+
 				Send("{DOWN}")
+				$current = ControlGetText($hWnd, "", $sControl)
+
+				If $previous == $current Then
+					ExitLoop
+				EndIf
+
 			EndIf
 
-		Until $previous == ControlGetText($hWnd, "", $sControl)
+			If _ArraySearch($aArray, $current) > -1 Then
+				Send("{TAB}")
+				Send("{TAB}")
+				Send("{SPACE}")
+				Send("{TAB}")
+			EndIf
+
+			Send("{DOWN}")
+
+			$previous = $current
+
+		Until False
 
 	Else
 
