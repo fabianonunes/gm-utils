@@ -2,6 +2,7 @@
 #include <Array.au3>
 #include <File.au3>
 #include <Misc.au3>
+#include "helpers.au3"
 
 Func checker($argFile = "")
 
@@ -26,20 +27,17 @@ Func checker($argFile = "")
 	If UBound($aArray) > 0 Then
 
 		Local $hWnd = WinActivate($title, $editor)
-		Local $sControl = ControlGetFocus($hWnd)
 		Local $previous = ""
 		Local $current = ""
 
 		Do
 
-			$current = ControlGetText($hWnd, "", $sControl)
-
-			ConsoleWrite($current & " - " & $previous & @LF)
+			$current = _getSelectedText($hWnd)
 
 			If $previous == $current Then
 
 				Send("{DOWN}")
-				$current = ControlGetText($hWnd, "", $sControl)
+				$current = _getSelectedText($hWnd)
 
 				If $previous == $current Then
 					ExitLoop
