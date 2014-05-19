@@ -2,6 +2,7 @@
 #include <Array.au3>
 #include <File.au3>
 #include <Misc.au3>
+#include "helpers.au3"
 
 Func planilhar($argFile = "")
 
@@ -27,7 +28,6 @@ Func planilhar($argFile = "")
 
 		Local $hWnd = WinActivate($title, $editor)
 
-		Local $sControl = ControlGetFocus($hWnd)
 		Local $current = ""
 		Local $trt = ""
 
@@ -67,7 +67,7 @@ Func planilhar($argFile = "")
 
 			$current = $numero & "-" & $digito & "." & $ano & "." & $justica & "." & $trt & "." & $vara
 
-			ConsoleWrite($current & @LF)
+			;ConsoleWrite($current & @LF)
 
 			If StringRegExp($current, $processoRegexp, 1) == 0 Then
 				ExitLoop
@@ -102,8 +102,3 @@ Func planilhar($argFile = "")
 
 
 EndFunc
-
-Func _getSelectedText($hWnd)
-	Return ControlCommand($hWnd, "", ControlGetFocus($hWnd), "GetSelected")
-EndFunc
-
