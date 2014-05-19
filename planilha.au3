@@ -3,9 +3,7 @@
 #include <File.au3>
 #include <Misc.au3>
 
-
-checker("e:\tp")
-Func checker($argFile = "")
+Func planilhar($argFile = "")
 
 	Opt("SendKeyDelay", 10)
 
@@ -28,13 +26,18 @@ Func checker($argFile = "")
 	If UBound($aArray) > 0 Then
 
 		Local $hWnd = WinActivate($title, $editor)
+
 		Local $sControl = ControlGetFocus($hWnd)
 		Local $current = ""
 		Local $trt = ""
 
 		Do
 
-			Local $numero = ControlGetText($hWnd, "", $sControl)
+			Local $numero = _getSelectedText($hWnd)
+
+			If Number($numero) == 0 Then
+				ExitLoop
+			EndIf
 
 			If _ArraySearch($aArray, "^"&$numero, 0, 0, 0, 3) == -1 Then
 				Send("{DOWN}")
@@ -43,24 +46,24 @@ Func checker($argFile = "")
 
 			Send("{TAB}")
 
-			Local $digito = ControlGetText($hWnd, "", $sControl)
+			Local $digito = _getSelectedText($hWnd)
 			Send("{TAB}")
 
-			Local $ano = ControlGetText($hWnd, "", $sControl)
+			Local $ano = _getSelectedText($hWnd)
 			Send("{TAB}")
 
-			Local $justica = ControlGetText($hWnd, "", $sControl)
+			Local $justica = _getSelectedText($hWnd)
 			Send("{TAB}")
 
 			If StringLen($justica) == 2 Then
 				$trt = $justica
 				$justica = "5"
 			Else
-				$trt = ControlGetText($hWnd, "", $sControl)
+				$trt = _getSelectedText($hWnd)
 				Send("{TAB}")
 			EndIf
 
-			Local $vara = ControlGetText($hWnd, "", $sControl)
+			Local $vara = _getSelectedText($hWnd)
 
 			$current = $numero & "-" & $digito & "." & $ano & "." & $justica & "." & $trt & "." & $vara
 
@@ -83,7 +86,8 @@ Func checker($argFile = "")
 				Sleep(100)
 			Else
 				Send("{DOWN}")
-				Send("+{TAB}+{TAB}+{TAB}+{TAB}+{TAB}")
+				Send("+{TAB}+{TAB}")
+				Send("+{TAB}+{TAB}")
 				Sleep(20)
 			EndIf
 
@@ -96,4 +100,10 @@ Func checker($argFile = "")
 
 	EndIf
 
+
 EndFunc
+
+Func _getSelectedText($hWnd)
+	Return ControlCommand($hWnd, "", ControlGetFocus($hWnd), "GetSelected")
+EndFunc
+
