@@ -1,3 +1,5 @@
+#include-once
+
 #include <Array.au3>
 
 Func getPK($id)
@@ -30,3 +32,8 @@ Func openESij($id)
 		ShellExecute($url)
 	EndIf
 EndFunc
+
+Func _getSelectedText($hWnd)
+	Return ControlCommand($hWnd, "", ControlGetFocus($hWnd), "GetSelected")
+EndFunc
+
