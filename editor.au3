@@ -1,7 +1,7 @@
 ﻿#Region
 #AutoIt3Wrapper_Outfile=K:\001 - JOD - GMJOD (2013)\005 - DIVERSOS\Utilitarios\Scripts\Editor
 #__AutoIt3Wrapper_Outfile=D:\GMJD\Editor.exe
-#AutoIt3Wrapper_Res_Fileversion=0.0.0.51
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.56
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Icon=icons\editor.ico
 #AutoIt3Wrapper_Res_Icon_Add=icons\stamp.ico
@@ -17,9 +17,11 @@
 #include "about.au3"
 #include "carimbar.au3"
 #include "checker.au3"
+#include "planilha.au3"
 
 FileRegister("fab", 'D:\GMJD\Editor.exe stamp "%1"', 'Carimbar', 0, "D:\GMJD\Editor.exe,5")
 FileRegister("fab", 'D:\GMJD\Editor.exe check "%1"', 'Selecionar', 1, "D:\GMJD\Editor.exe,5")
+FileRegister("fab", 'D:\GMJD\Editor.exe planilhar "%1"', 'Planilhar', 0, "D:\GMJD\Editor.exe,5")
 
 If UBound($CmdLine) > 1 Then
 
@@ -32,6 +34,11 @@ If UBound($CmdLine) > 1 Then
 
 		TraySetIcon("icons\checker.ico")
 		checker($CmdLine[2])
+
+	ElseIf $CmdLine[1] == "planilhar" Then
+
+		TraySetIcon("icons\checker.ico")
+		planilhar($CmdLine[2])
 
 	EndIf
 
