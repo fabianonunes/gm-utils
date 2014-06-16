@@ -6,7 +6,7 @@
 
 Func planilhar($argFile = "")
 
-	Opt("SendKeyDelay", 10)
+	Opt("SendKeyDelay", 20)
 
 	Local $fileText
 
@@ -67,13 +67,10 @@ Func planilhar($argFile = "")
 
 			$current = $numero & "-" & $digito & "." & $ano & "." & $justica & "." & $trt & "." & $vara
 
-			;ConsoleWrite($current & @LF)
 
 			If StringRegExp($current, $processoRegexp, 1) == 0 Then
 				ExitLoop
 			EndIf
-
-			ConsoleWrite($current & @LF)
 
 			If _ArraySearch($aArray, $current) > -1 Then
 				Send("{TAB}{TAB}{TAB}{TAB}{TAB}")
@@ -81,9 +78,9 @@ Func planilhar($argFile = "")
 				; - vai e volta
 				Send("{DOWN}")
 				Send("^{PGDN}")
-				Sleep(100)
+				Sleep(50)
 				Send("^{PGDN}")
-				Sleep(100)
+				Sleep(200)
 			Else
 				Send("{DOWN}")
 				Send("+{TAB}+{TAB}")
